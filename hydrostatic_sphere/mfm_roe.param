@@ -1,0 +1,159 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/hydrostatic_sphere/hydro_sphere.ic
+OutputDir                             test_runs/out_hydrostat_sphere_mfm_roe
+
+EnergyFile                            energy.txt
+InfoFile                              info.txt
+TimingsFile                           timings.txt
+CpuFile                               cpu.txt
+TimebinFile                           timebin.txt
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    outputs.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          210000
+ResubmitOn                            0
+ResubmitCommand                       resub.cmd
+
+MaxMemSize                            1400
+LevelOfStrickness                     1
+
+% Code options
+
+ComovingIntegrationOn                 0
+TypeOfTimestepCriterion               0
+PeriodicBoundariesOn                  0
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.05
+TimeOfFirstSnapshot                   0.
+
+CpuTimeBetRestartFile                 3600
+TimeBetStatistics                     0.1
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       5
+BufferSize                            150
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               10.0
+
+Omega0                                1.0
+OmegaLambda                           0.0
+OmegaBaryon                           0.1
+                                      
+HubbleParam                           0.72
+BoxSize                               32000.0
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy                     0.025
+
+CourantFac                            0.05
+                                      
+                                      
+MaxSizeTimestep                       0.001
+MinSizeTimestep                       0
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                           0.45
+TypeOfOpeningCriterion                1
+ErrTolForceAcc                        0.005
+
+TreeDomainUpdateFrequency             0.025
+MaxRMSDisplacementFac                 0.25
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             32
+MaxNumNgbDeviation                    0.1
+ArtBulkViscConst                      0
+InitGasTemp                           166.53
+MinGasTemp                            100.
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      3.085678e21
+UnitMass_in_g                         1.989e43
+UnitVelocity_in_cm_per_s              1e5
+GravityConstantInternal               0
+
+
+% Softening lengths
+
+                                      
+MinGasHsmlFractional                  0.
+
+SofteningGas                          12
+SofteningHalo                         12
+SofteningDisk                         0.
+SofteningBulge                        0.
+SofteningStars                        0.
+SofteningBndry                        0.
+
+SofteningGasMaxPhys                   12
+SofteningHaloMaxPhys                  12
+SofteningDiskMaxPhys                  0.
+SofteningBulgeMaxPhys                 0.
+SofteningStarsMaxPhys                 0.
+SofteningBndryMaxPhys                 0.
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+
+% Special physics
+
+CoolingOn                             0
+StarformationOn                       0
+BlackHolesOn                          0
+SpectralCRsOn                         0
+
+% Moving mesh
+                                      
+                                      
+
+
+% More parameters
+
+AGS_DesNumNgb                         32
+AGS_MaxNumNgbDeviation                0.1
+ViscositySourceScaling                0.0
+ViscosityDecayLength                  0
+ViscosityAlphaMin                     0

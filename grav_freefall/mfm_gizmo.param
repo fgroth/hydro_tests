@@ -1,0 +1,180 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/grav_freefall/freefall.ic
+OutputDir                             test_runs/out_grav_freefall_mfm_gizmo
+
+                                      
+                                      
+                                      
+                                      
+                                      
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_final.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          17280000
+                                      
+                                      
+
+MaxMemSize                            2000
+                                      
+
+% Code options
+
+ComovingIntegrationOn                 0
+                                      
+                                      
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.05
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 7200.0
+                                      
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       20.0
+BufferSize                            50
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               1.05
+
+Omega0                                1.0
+OmegaLambda                           1.0
+OmegaBaryon                           0.05
+OmegaRadiation                        
+HubbleParam                           1.0
+BoxSize                               2.0
+
+
+% Accuracy of time integration
+
+                                      
+
+                                      
+                                      
+                                      
+MaxSizeTimestep                       0.00668367
+MinSizeTimestep                       6.37404e-12
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+                                      
+                                      
+                                      
+
+TreeDomainUpdateFrequency             0.01
+                                      
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             32
+                                      
+                                      
+InitGasTemp                           0
+MinGasTemp                            1e-20
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      1.0
+UnitMass_in_g                         1.0
+UnitVelocity_in_cm_per_s              1.0
+GravityConstantInternal               1.0
+
+
+% Softening lengths
+
+MaxHsml                               
+MinGasHsmlFractional                  0.1
+
+SofteningGas                          0.02
+SofteningHalo                         0.087
+SofteningDisk                         0.02
+SofteningBulge                        0.02
+SofteningStars                        0.02
+SofteningBndry                        0.02
+
+SofteningGasMaxPhys                   0.02
+SofteningHaloMaxPhys                  0.087
+SofteningDiskMaxPhys                  0.02
+SofteningBulgeMaxPhys                 0.02
+SofteningStarsMaxPhys                 0.02
+SofteningBndryMaxPhys                 0.02
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+
+% Special physics
+
+                                      
+                                      
+                                      
+                                      
+
+% Moving mesh
+                                      
+                                      
+
+
+SpectralCRsOn                         0
+TimingsFile                           timings.txt
+EnergyFile                            energy.txt
+ErrTolIntAccuracy                     0.01
+ErrTolTheta                           0.0005
+ArtCondConstant                       0.0
+MaxRMSDisplacementFac                 0.2
+ArtBulkViscConst                      2.0
+CpuFile                               cpu.txt
+TypeOfTimestepCriterion               0
+LevelOfStrickness                     1
+StarformationOn                       0
+TypeOfOpeningCriterion                1
+ViscositySourceScaling                0.0
+TimeBetStatistics                     0.5
+InfoFile                              info.txt
+CourantFac                            0.1
+BlackHolesOn                          0
+ViscosityDecayLength                  0.025
+MaxNumNgbDeviation                    0.01
+TimebinFile                           timebin.txt
+ViscosityAlphaMin                     1.0
+PeriodicBoundariesOn                  0
+ResubmitCommand                       xxx
+ErrTolForceAcc                        0.00001
+CoolingOn                             0
+ResubmitOn                            0
+ArtCondMin                            0.0

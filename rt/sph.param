@@ -1,0 +1,157 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/rt/rt.ic
+OutputDir                             test_runs/out_rt_sph
+
+EnergyFile                            energy.txt
+InfoFile                              info.txt
+TimingsFile                           timings.txt
+CpuFile                               cpu.txt
+TimebinFile                           timebin.txt
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_final.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          240000
+ResubmitOn                            0
+ResubmitCommand                       xxx
+
+MaxMemSize                            1600
+LevelOfStrickness                     1
+
+% Code options
+
+ComovingIntegrationOn                 0
+TypeOfTimestepCriterion               0
+PeriodicBoundariesOn                  1
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.1
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 7200.0
+TimeBetStatistics                     0.5
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       5
+BufferSize                            150
+
+
+%  Caracteristics of run
+
+TimeBegin                             0
+TimeMax                               20
+
+Omega0                                1.0
+OmegaLambda                           1.0
+OmegaBaryon                           0.05
+                                      
+HubbleParam                           1.0
+BoxSize                               1
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy                     0.001
+
+CourantFac                            0.1
+                                      
+                                      
+MaxSizeTimestep                       0.1
+MinSizeTimestep                       1e-8
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                           0.05
+TypeOfOpeningCriterion                1
+ErrTolForceAcc                        0.001
+
+TreeDomainUpdateFrequency             0.5
+MaxRMSDisplacementFac                 0.2
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             64 %45
+MaxNumNgbDeviation                    0.01
+ArtBulkViscConst                      2.0
+InitGasTemp                           0
+MinGasTemp                            1e-20
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      1
+UnitMass_in_g                         1
+UnitVelocity_in_cm_per_s              1
+GravityConstantInternal               1
+
+
+% Softening lengths
+
+                                      
+MinGasHsmlFractional                  0.1
+
+SofteningGas                          0.05
+SofteningHalo                         0.0
+SofteningDisk                         0.0
+SofteningBulge                        0.0
+SofteningStars                        0.0
+SofteningBndry                        0.0
+
+SofteningGasMaxPhys                   0.05
+SofteningHaloMaxPhys                  0.0
+SofteningDiskMaxPhys                  0.0
+SofteningBulgeMaxPhys                 0.0
+SofteningStarsMaxPhys                 0.0
+SofteningBndryMaxPhys                 0.0
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+
+% Special physics
+
+CoolingOn                             0
+StarformationOn                       0
+BlackHolesOn                          0
+SpectralCRsOn                         0
+
+% Moving mesh
+                                      
+                                      
+
+
+ArtCondConstant                       0.25
+ArtCondMin                            0.0
+ViscositySourceScaling                0.0
+ViscosityDecayLength                  4.0
+ViscosityAlphaMin                     0.025

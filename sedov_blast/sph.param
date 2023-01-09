@@ -1,0 +1,159 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/sedov_blast/sedov.ic
+OutputDir                             test_runs/out_sedov_sph
+
+EnergyFile                            energy.txt
+InfoFile                              info.txt
+TimingsFile                           timings.txt
+CpuFile                               cpu.txt
+TimebinFile                           timebin.txt
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_final.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          17280000
+ResubmitOn                            0
+ResubmitCommand                       xxx
+
+MaxMemSize                            4000
+LevelOfStrickness                     1
+
+% Code options
+
+ComovingIntegrationOn                 0
+TypeOfTimestepCriterion               0
+PeriodicBoundariesOn                  1
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.00125
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 7200.0
+TimeBetStatistics                     0.5
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       20.0
+BufferSize                            50
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               0.025
+
+Omega0                                1.0
+OmegaLambda                           1.0
+OmegaBaryon                           0.05
+                                      
+HubbleParam                           1.0
+BoxSize                               1.0
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy                     0.001
+
+CourantFac                            0.15
+                                      
+                                      
+MaxSizeTimestep                       0.00668367
+MinSizeTimestep                       6.37404e-12
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                           0.05
+TypeOfOpeningCriterion                1
+ErrTolForceAcc                        0.001
+
+TreeDomainUpdateFrequency             0.01
+MaxRMSDisplacementFac                 0.2
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             295
+MaxNumNgbDeviation                    0.1
+ArtBulkViscConst                      2.0
+InitGasTemp                           0
+MinGasTemp                            1e-20
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      1.0
+UnitMass_in_g                         1.0
+UnitVelocity_in_cm_per_s              1.0
+GravityConstantInternal               1.0
+
+
+% Softening lengths
+
+                                      
+MinGasHsmlFractional                  0.1
+
+SofteningGas                          0.02
+SofteningHalo                         0.087
+SofteningDisk                         0.02
+SofteningBulge                        0.02
+SofteningStars                        0.02
+SofteningBndry                        0.02
+
+SofteningGasMaxPhys                   0.02
+SofteningHaloMaxPhys                  0.087
+SofteningDiskMaxPhys                  0.02
+SofteningBulgeMaxPhys                 0.02
+SofteningStarsMaxPhys                 0.02
+SofteningBndryMaxPhys                 0.02
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+
+% Special physics
+
+CoolingOn                             0
+StarformationOn                       0
+BlackHolesOn                          0
+SpectralCRsOn                         0
+
+% Moving mesh
+                                      
+                                      
+
+
+% More parameters
+
+ArtCondConstant                       0.0
+ViscositySourceScaling                0.0
+ViscosityDecayLength                  0.025
+ViscosityAlphaMin                     1.0
+ArtCondMin                            0.0

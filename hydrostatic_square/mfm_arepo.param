@@ -1,0 +1,156 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/hydrostatic_square/square.ic
+OutputDir                             test_runs/out_hydrostat_square_mfm_arepo
+
+EnergyFile                            energy.txt
+InfoFile                              info.txt
+TimingsFile                           timings.txt
+CpuFile                               cpu.txt
+TimebinFile                           timebins.txt
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_list.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          1000000
+ResubmitOn                            0
+ResubmitCommand                       xyz
+
+MaxMemSize                            9000
+LevelOfStrickness                     0
+
+% Code options
+
+ComovingIntegrationOn                 0
+TypeOfTimestepCriterion               0
+PeriodicBoundariesOn                  1
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.5
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 3600.0
+TimeBetStatistics                     0.05
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       4.5
+BufferSize                            5
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               10.0
+
+Omega0                                0
+OmegaLambda                           0
+OmegaBaryon                           0
+                                      
+HubbleParam                           1.0
+BoxSize                               1
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy                     0.05
+
+CourantFac                            0.1
+                                      
+                                      
+MaxSizeTimestep                       0.02
+MinSizeTimestep                       0.0
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                           0.5
+TypeOfOpeningCriterion                1
+ErrTolForceAcc                        0.005
+
+TreeDomainUpdateFrequency             0.1
+MaxRMSDisplacementFac                 0.25
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             14 %14 %22
+MaxNumNgbDeviation                    1
+ArtBulkViscConst                      0.0
+InitGasTemp                           0
+MinGasTemp                            0
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      1.0
+UnitMass_in_g                         1.0
+UnitVelocity_in_cm_per_s              1.0
+GravityConstantInternal               1.0
+
+
+% Softening lengths
+
+                                      
+MinGasHsmlFractional                  0.0
+
+SofteningGas                          0.004
+SofteningHalo                         0
+SofteningDisk                         0
+SofteningBulge                        0
+SofteningStars                        0
+SofteningBndry                        0
+
+SofteningGasMaxPhys                   0.004
+SofteningHaloMaxPhys                  0
+SofteningDiskMaxPhys                  0
+SofteningBulgeMaxPhys                 0
+SofteningStarsMaxPhys                 0
+SofteningBndryMaxPhys                 0
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+
+% Special physics
+
+CoolingOn                             0
+StarformationOn                       0
+BlackHolesOn                          0
+SpectralCRsOn                         0
+
+% Moving mesh
+                                      
+                                      
+
+
+% More parameters
+
+%EkinSwitchFraction                    0
+%EpotSwitchFraction                    0

@@ -1,0 +1,133 @@
+#!/bin/bash
+# Help
+Help()
+{
+    # Display Help
+    echo "Runs a test problem"
+    echo
+    echo "Syntax: $progname [OPTION]"
+    echo 
+    echo "Options:"
+    echo "  -c, --code=CODE    specify code to use. Otherwise, the code is assumed using the hydro_method."
+    echo "                     If hydro_method contains arepo: arepo. If hydro_method contains gizmo: gizmo. Default: OpenGadget3. "
+    echo "  -d DIR             output dir"
+    echo "  -e, --exec=EXEC    specify name of test directory, default: hydrostatic_square"
+    echo "  --final            do this as a final run, copy program and relevant files to the run directory."
+    echo "  -h, --help         display this help and exit"
+    echo "  -m METHOD          hydro_method, default: mfm"
+    echo "  -n --no-compile    don't compile, juts use existing program"
+    echo "  -r RESTART_FLAG    restart_flag, default: 0 # resolution (necessary for some test ptoblems)"
+    echo "  -s SUFFIX          suffix for executable"
+    echo "  --snap_num=SNAPNUM snap number to be used if required by restart_flag (e. g. restart from snapshots) "
+}
+# main program
+# default values
+export EXEC=hydrostatic_square
+export hydro_method=mfm
+export output_dir=test_runs
+export restart=0
+export snap_num=
+export code= #empty
+export compile=true
+export final=false
+
+progname=$(basename $0)
+
+# input parameters
+OPTS=$(getopt -o "c:d:e:hm:ns:r:" --long "code:,final,exec:,help,no-compile,snap_num:" -n "$progname" -- "$@")
+if [ $? != 0 ] ; then echo "Error in command line arguments." >&2 ; exit 1 ; fi
+eval set -- "$OPTS"
+
+while true; do
+    case $1 in
+	-c | --code )
+	    code=$2; shift 2;;
+	-d )
+	    output_dir=$2; shift 2;;
+	-e | --exec )
+	    EXEC=$2; shift 2;;
+	--final )
+	    final=true; shift;;
+	-h | --help )
+	    Help; exit;;
+	-m )
+	    hydro_method=$2; shift 2;;
+	-n | --no-compile )
+	    compile=false; shift;;
+	-s )
+	    SUFFIX=$2; shift 2;;
+	--snap_num )
+	    snap_num=$2; shift 2;;
+	-r )
+	    restart=$2; shift 2;;
+	\? )
+	    echo $1; echo "Error: Invalid option "$1
+	    exit;;
+	-- ) shift; break;;
+	* ) break;;
+    esac
+done
+	  
+if [ -z "$code" ]; then # choose default code if not specified
+    if [[ $hydro_method = *"arepo"* ]]; then
+	code=arepo
+	module unload intel
+	#module load intel/18.0
+	module load icc
+    elif [[ $hydro_method = *"gizmo"* ]]; then
+	code=gizmo-public
+	module unload intel
+	module load intel/18.0
+    else
+	code=OpenGadget3
+	module unload intel
+	module load intel/17.0
+    fi
+fi
+echo "using "$code
+echo "test" $EXEC
+echo "hydro method "$hydro_method
+
+if [[ $restart_flag > 1 ]]; then # require snap_num
+    if [[ -z $snap_num ]]; then # snap_num not set as argument
+	snap_num=0 # it would actually be nice, if I could choose the last snap instead.
+    fi
+fi
+
+# preparation
+if [[ -f hydro_tests/$EXEC/prepare_run ]]; then
+    hydro_tests/$EXEC/prepare_run
+fi
+
+if [[ $final == true ]]; then
+    # create local copy on OutputDir, so run is completely reproducable!
+    relevant_line=$(grep OutputDir ./hydro_tests/$EXEC/${hydro_method,,}.param)
+    IFS=' ' read -ra my_array <<< "$relevant_line"
+    OutputDir=${my_array[1]}
+    if [[ $restart == 0 ]]; then
+	mkdir -p $OutputDir
+	cp -rL $code $OutputDir
+	cp -rL ./hydro_tests/$EXEC/${hydro_method,,}.param $OutputDir
+	cp -rL $test_dir/hydro_tests/$EXEC/${hydro_method,,}.Config $OutputDir
+    fi
+    code=$OutputDir/$code
+    echo $code
+fi
+
+if [[ $compile == true ]]; then
+    # compilation
+    cd $code
+    make clean
+    make -j $MPI_TASKS CONFIG=$test_dir/hydro_tests/$EXEC/${hydro_method,,}.Config EXEC=$EXEC$SUFFIX
+    cd -
+fi
+
+# actual run
+echo "run on "$MPI_TASKS" MPI ranks, "$OMP_NUM_THREADS" OpenMP threads"
+( mpiexec -n $MPI_TASKS $code/$EXEC$SUFFIX ./hydro_tests/$EXEC/${hydro_method,,}.param $restart $snap_num > $output_dir/${EXEC,,}$SUFFIX.out ) >& $output_dir/${EXEC,,}$SUFFIX.err
+
+# post-processing
+if [[ -f hydro_tests/$EXEC/create_plots ]]; then
+    hydro_tests/$EXEC/create_plots
+fi
+

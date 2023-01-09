@@ -1,0 +1,160 @@
+%%% OpenGadget3:32
+%%% AREPO:37
+%%% GIZMO:69
+%  Relevant files
+
+InitCondFile                    InitCondFile                         InitCondFile/Initial_Conditions_File
+OutputDir                       OutputDir                            OutputDir/Output_Directory
+
+EnergyFile                                                           
+InfoFile                                                             
+TimingsFile                                                          
+CpuFile                                                              
+TimebinFile                                                          
+
+RestartFile                                                          RestartFile/Restart_Filename_Base
+SnapshotFileBase                SnapshotFileBase                     SnapshotFileBase/Snapshot_Filename_Base
+
+OutputListOn                    OutputListOn                         OutputListOn/Use_Tabulated_Snapshot_Times
+OutputListFilename              OutputListFilename                   OutputListFilename/Snapshot_Times_Table_Filename
+
+
+% Output/Input format
+
+ICFormat                        ICFormat                             ICFormat/Initial_Conditions_Format
+SnapFormat                      SnapFormat                           SnapFormat/Snapshot_Format
+
+
+% CPU-time limit
+
+TimeLimitCPU                    TimeLimitCPU                         TimeLimitCPU/MaxSimulationWallTime_in_Seconds
+ResubmitOn                      ResubmitOn                           
+ResubmitCommand                 ResubmitCommand                      
+
+MaxMemSize                      MaxMemSize                           MaxMemSize/Max_Memory_Per_MPI_Task_in_MB
+LevelOfStrickness                                                    
+
+% Code options
+
+ComovingIntegrationOn           ComovingIntegrationOn                ComovingIntegrationOn/Cosmological_Simulation_On
+TypeOfTimestepCriterion         TypeOfTimestepCriterion              
+PeriodicBoundariesOn            PeriodicBoundariesOn                 
+
+
+% Output frequency
+
+TimeBetSnapshot                 TimeBetSnapshot                      TimeBetSnapshot/Time_Between_Snapshots
+TimeOfFirstSnapshot             TimeOfFirstSnapshot                  TimeOfFirstSnapshot/Simulation_Time_of_First_Snapshot
+
+CpuTimeBetRestartFile           CpuTimeBetRestartFile                CpuTimeBetRestartFile/Walltime_in_Seconds_Between_Restartfiles
+TimeBetStatistics               TimeBetStatistics                    
+
+NumFilesPerSnapshot             NumFilesPerSnapshot                  NumFilesPerSnapshot/Number_of_Files_per_Snapshot
+NumFilesWrittenInParallel       NumFilesWrittenInParallel            NumFilesWrittenInParallel/Number_of_Files_Written_in_Parallel
+
+
+% Memory allocation
+
+PartAllocFactor                                                      PartAllocFactor/ParticleNumberMemoryImbalance_Limit
+BufferSize                                                           BufferSize/MPI_Buffersize_in_MB
+
+
+%  Caracteristics of run
+
+TimeBegin                       TimeBegin                            TimeBegin/Time_at_ICs_Begin
+TimeMax                         TimeMax                              TimeMax/Time_at_End_of_Simulation
+
+Omega0                          Omega0                               Omega0/Omega_Matter
+OmegaLambda                     OmegaLambda                          OmegaLambda/Omega_Lambda
+OmegaBaryon                     OmegaBaryon                          OmegaBaryon/Omega_Baryon
+                                                                     OmegaRadiation/Omega_Radiation
+HubbleParam                     HubbleParam                          HubbleParam/Hubble_Param_Little_h
+BoxSize                         BoxSize                              BoxSize/Box_Size_In_Code_Units
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy               ErrTolIntAccuracy                    
+
+CourantFac                      CourantFac                           
+                                LimitUBelowThisDensity               
+                                LimitUBelowCertainDensityToThisValue 
+MaxSizeTimestep                 MaxSizeTimestep                      MaxSizeTimestep/Maximum_Timestep_Allowed
+MinSizeTimestep                 MinSizeTimestep                      MinSizeTimestep/Minimum_Timestep_Allowed
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                     ErrTolTheta
+TypeOfOpeningCriterion          TypeOfOpeningCriterion
+ErrTolForceAcc                  ErrTolForceAcc
+
+TreeDomainUpdateFrequency                                            TreeDomainUpdateFrequency/DomainTreeRebuild_ActiveFractionThreshold
+MaxRMSDisplacementFac           
+                                MultipleDomains
+                                TopNodeFactor
+                                ActivePartFracForNewDomainDecomp
+
+
+%  Further parameters of SPH
+
+DesNumNgb                       DesNumNgb                            DesNumNgb/Effective_Kernel_NeighborNumber
+MaxNumNgbDeviation              MaxNumNgbDeviation
+ArtBulkViscConst
+InitGasTemp                     InitGasTemp                          InitGasTemp/Initial_Gas_Temperature
+MinGasTemp                      MinGasTemp                           MinGasTemp/Minimum_Gas_Temperature
+                                MinEgySpec
+                                MinimumDensityOnStartUp
+
+% System of units
+
+UnitLength_in_cm                UnitLength_in_cm                     UnitLength_in_cm/UnitLength_in_cms
+UnitMass_in_g                   UnitMass_in_g                        UnitMass_in_g/UnitMass_in_grams
+UnitVelocity_in_cm_per_s        UnitVelocity_in_cm_per_s             UnitVelocity_in_cm_per_s/UnitVelocity_in_cm_per_seconds
+GravityConstantInternal         GravityConstantInternal              GravityConstantInternal/GravityConstant_SetByHand_inCodeUnits
+
+
+% Softening lengths
+
+                                                                     MaxHsml/Maximum_KernelSize_CodeUnits
+MinGasHsmlFractional            GasSoftFactor                        MinGasHsmlFractional/Minimum_Gas_KernelSize_RelativetoSoftening
+
+SofteningGas                    SofteningComovingType0               SofteningGas/Softening_Type0
+SofteningHalo                   SofteningComovingType1               SofteningHalo/Softening_Type1
+SofteningDisk                   SofteningComovingType2               SofteningDisk/Softening_Type2
+SofteningBulge                  SofteningComovingType3               SofteningBulge/Softening_Type3
+SofteningStars                  SofteningComovingType4               SofteningStars/Softening_Type4
+SofteningBndry                  SofteningComovingType5               SofteningBndry/Softening_Type5
+
+SofteningGasMaxPhys             SofteningMaxPhysType0                SofteningGasMaxPhys/Softening_Type0_MaxPhysLimit
+SofteningHaloMaxPhys            SofteningMaxPhysType1                SofteningHaloMaxPhys/Softening_Type1_MaxPhysLimit
+SofteningDiskMaxPhys            SofteningMaxPhysType2                SofteningDiskMaxPhys/Softening_Type2_MaxPhysLimit
+SofteningBulgeMaxPhys           SofteningMaxPhysType3                SofteningBulgeMaxPhys/Softening_Type3_MaxPhysLimit
+SofteningStarsMaxPhys           SofteningMaxPhysType4                SofteningStarsMaxPhys/Softening_Type4_MaxPhysLimit
+SofteningBndryMaxPhys           SofteningMaxPhysType5                SofteningBndryMaxPhys/Softening_Type5_MaxPhysLimit
+
+                                SofteningTypeOfPartType0             
+                                SofteningTypeOfPartType1             
+                                SofteningTypeOfPartType2             
+                                SofteningTypeOfPartType3             
+                                SofteningTypeOfPartType4             
+                                SofteningTypeOfPartType5             
+
+                                MinimumComovingHydroSoftening        
+                                AdaptiveHydroSofteningSpacing        
+
+
+% Special physics
+
+CoolingOn                       CoolingOn                            
+StarformationOn                 StarformationOn                      
+BlackHolesOn                                                         
+SpectralCRsOn                                                        
+
+% Moving mesh
+                                CellShapingSpeed
+                                CellShapingFactor
+                                CellMaxAngleFactor                   
+
+% More parameters
+

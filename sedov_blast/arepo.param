@@ -1,0 +1,148 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/sedov_blast/sedov.ic
+OutputDir                             test_runs/out_sedov_arepo
+
+
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_final.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          17280000
+ResubmitOn                            0
+ResubmitCommand                       xxx
+
+MaxMemSize                            4000
+
+% Code options
+
+ComovingIntegrationOn                 0
+TypeOfTimestepCriterion               0
+PeriodicBoundariesOn                  1
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.00125
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 7200.0
+TimeBetStatistics                     0.5
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               0.025
+
+Omega0                                1.0
+OmegaLambda                           1.0
+OmegaBaryon                           0.05
+                                      
+HubbleParam                           1.0
+BoxSize                               1.0
+
+
+% Accuracy of time integration
+
+ErrTolIntAccuracy                     0.001
+
+CourantFac                            0.15
+LimitUBelowThisDensity                0.0
+LimitUBelowCertainDensityToThisValue  0.0
+MaxSizeTimestep                       0.00668367
+MinSizeTimestep                       6.37404e-12
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+ErrTolTheta                           0.05
+TypeOfOpeningCriterion                1
+ErrTolForceAcc                        0.001
+
+MultipleDomains                       4
+TopNodeFactor                         4
+ActivePartFracForNewDomainDecomp      0.01
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             32
+MaxNumNgbDeviation                    0.1
+InitGasTemp                           0
+MinGasTemp                            1e-20
+MinEgySpec                            0.0
+MinimumDensityOnStartUp               0.0
+
+% System of units
+
+UnitLength_in_cm                      1.0
+UnitMass_in_g                         1.0
+UnitVelocity_in_cm_per_s              1.0
+GravityConstantInternal               1.0
+
+
+% Softening lengths
+
+                                      
+GasSoftFactor                         0.1
+
+SofteningComovingType0                0.02
+SofteningComovingType1                0.087
+SofteningComovingType2                0.02
+SofteningComovingType3                0.02
+SofteningComovingType4                0.02
+SofteningComovingType5                0.02
+
+SofteningMaxPhysType0                 0.02
+SofteningMaxPhysType1                 0.087
+SofteningMaxPhysType2                 0.02
+SofteningMaxPhysType3                 0.02
+SofteningMaxPhysType4                 0.02
+SofteningMaxPhysType5                 0.02
+
+SofteningTypeOfPartType0              0
+SofteningTypeOfPartType1              0
+SofteningTypeOfPartType2              0
+SofteningTypeOfPartType3              0
+SofteningTypeOfPartType4              0
+SofteningTypeOfPartType5              0
+
+MinimumComovingHydroSoftening         0.0001
+AdaptiveHydroSofteningSpacing         1.2
+
+
+% Special physics
+
+CoolingOn                             0
+StarformationOn                       0
+
+% Moving mesh
+CellShapingSpeed                      0.1
+CellShapingFactor                     1
+CellMaxAngleFactor                    2.25
+
+% More parameters
+
+ArtCondConstant                       0.0
+ViscositySourceScaling                0.0
+ViscosityDecayLength                  0.0
+ViscosityAlphaMin                     0.0
+ArtCondMin                            0.0

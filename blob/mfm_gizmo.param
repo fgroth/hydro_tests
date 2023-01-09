@@ -1,0 +1,134 @@
+%  Relevant files
+
+InitCondFile                          hydro_tests/blob/blob_ics.ic
+OutputDir                             test_runs/out_blob_mfm_gizmo/
+
+
+RestartFile                           restart
+SnapshotFileBase                      snap
+
+OutputListOn                          0
+OutputListFilename                    output_list.txt
+
+
+% Output/Input format
+
+ICFormat                              2
+SnapFormat                            2
+
+
+% CPU-time limit
+
+TimeLimitCPU                          1000000
+
+MaxMemSize                            20000
+
+% Code options
+
+ComovingIntegrationOn                 0
+
+
+% Output frequency
+
+TimeBetSnapshot                       0.1
+TimeOfFirstSnapshot                   0
+
+CpuTimeBetRestartFile                 3600
+
+NumFilesPerSnapshot                   1
+NumFilesWrittenInParallel             1
+
+
+% Memory allocation
+
+PartAllocFactor                       5
+BufferSize                            150
+
+
+%  Caracteristics of run
+
+TimeBegin                             0.0
+TimeMax                               8.0
+
+Omega0                                0
+OmegaLambda                           0
+OmegaBaryon                           0
+OmegaRadiation                        
+HubbleParam                           1.0
+BoxSize                               2000
+
+
+% Accuracy of time integration
+
+
+                                      
+                                      
+MaxSizeTimestep                       0.02
+MinSizeTimestep                       0.0
+
+
+% Tree algorithm, force accuracy, domain update frequency
+
+
+TreeDomainUpdateFrequency             0.05
+                                      
+                                      
+                                      
+
+
+%  Further parameters of SPH
+
+DesNumNgb                             32
+InitGasTemp                           0
+MinGasTemp                            0
+                                      
+                                      
+
+% System of units
+
+UnitLength_in_cm                      3.085678e+21
+UnitMass_in_g                         1.989e+43
+UnitVelocity_in_cm_per_s              100000
+GravityConstantInternal               0.0
+
+
+% Softening lengths
+
+MaxHsml                               
+MinGasHsmlFractional                  0.0
+
+SofteningGas                          0.05
+SofteningHalo                         0
+SofteningDisk                         0
+SofteningBulge                        0
+SofteningStars                        0
+SofteningBndry                        0
+
+SofteningGasMaxPhys                   0.05
+SofteningHaloMaxPhys                  0
+SofteningDiskMaxPhys                  0
+SofteningBulgeMaxPhys                 0
+SofteningStarsMaxPhys                 0
+SofteningBndryMaxPhys                 0
+
+                                      
+                                      
+                                      
+                                      
+                                      
+                                      
+
+                                      
+                                      
+
+
+% Special physics
+
+
+% Moving mesh
+                                      
+                                      
+                                      
+
+% More parameters
+
