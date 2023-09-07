@@ -110,13 +110,14 @@ function method_comparison(test_dir::String,igrid1::Int64,igrid2::Int64=-1;norma
         #plot_powerspectrum(test_dir*"/out_turb_arepo_static_256/",igrid1,label="arepo_static_256",color="purple",overplot=true,marker="P",ax=ax,normalized=normalized) # ,scale=1
         # arepo_128
         arepo_line = plot_powerspectrum(test_dir*"/out_turb_arepo_128/",igrid1,label="arepo_128",color=method_color(i_arepo,i_128,plot_all_methods,plot_all_resolutions),marker=res_marker(i_arepo,i_128,plot_all_methods,plot_all_resolutions),overplot=true,ax=ax,normalized=normalized)
+        gizmo_line = plot_powerspectrum(test_dir*"/out_turb_mfm_gizmo_128"*suffix*"/",igrid1,label="gizmo_128",color=method_color(i_gizmo,i_128,plot_all_methods,plot_all_resolutions),marker=res_marker(i_gizmo,i_128,plot_all_methods,plot_all_resolutions),overplot=true,ax=ax,normalized=normalized, scale=scale)
     end
     
     tight_layout()
 
     if plot_all_methods
-        method_lines = [kol_line,mfm_cubic_line,sph_line,arepo_line,arepo_static_line]
-        method_descriptions = ["Kolmogorov", "MFM (OpenGadget3)", "SPH (OpenGadget3)","Moving Mesh (AREPO)","Static Mesh (AREPO)"]
+        method_lines = [kol_line,mfm_cubic_line,gizmo_line,sph_line,arepo_line,arepo_static_line]
+        method_descriptions = ["Kolmogorov", "MFM (OpenGadget3)", "MFM (gizmo)", "SPH (OpenGadget3)","Moving Mesh (AREPO)","Static Mesh (AREPO)"]
         method_legend = legend(method_lines,method_descriptions, bbox_to_anchor=[0.3,0.02], borderpad=0, borderaxespad=0, loc="lower left")
     end
     if plot_all_resolutions

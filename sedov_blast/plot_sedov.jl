@@ -15,7 +15,7 @@ Create comparison plot of radial density profile for sedov blast wave test.
 function plot_sedov( ; main_dir::String="../../../test_runs/out_sedov_",
                     snap_num::Int64=6, method=["mfm", "sph","mfm_gizmo", "arepo"], names=["MFM", "SPH", "GIZMO", "AREPO"])
 
-    fig = figure(figsize=(8,8))
+    fig = figure(figsize=(8,8), dpi=300)
     style_plot(fig_width=8, print_columns=2)
     rc("lines", markersize=3)
     gs = fig.add_gridspec(2,2, hspace=0,wspace=0)
@@ -43,7 +43,7 @@ function plot_sedov( ; main_dir::String="../../../test_runs/out_sedov_",
         println(maximum(sedov_ideal.rho))
         #end
         
-        line = ax[i_method].scatter(pos[1,:], rho, marker=get_marker(1), color=get_color(1),s=1e-1)
+        line = ax[i_method].scatter(pos[1,:], rho, marker=get_marker(1), color=get_color(1),s=1e-1, rasterized=true)
         append!(lines,[line])
 
         ax[i_method].text(0.05,4,names[i_method],fontsize=PyPlotHelper.title_font_size)
@@ -61,7 +61,7 @@ function plot_sedov( ; main_dir::String="../../../test_runs/out_sedov_",
     ax[1,1].set_ylabel(L"\rho")
     ax[2,1].set_ylabel(L"\rho")
         
-    fig.savefig("sedov.png")
+    fig.savefig("sedov.pdf")
     if close_all_figures
         close(fig)
     end

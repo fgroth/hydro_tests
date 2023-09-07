@@ -19,7 +19,7 @@ function plot_square(snap::String; ax=nothing,s=1e-3)
     pos = read_block(snap, "POS", parttype=0)
     rho = read_block(snap, "RHO", parttype=0)
 
-    ax.scatter(pos[1,:],pos[2,:],c=rho,cmap="plasma",vmin=0,vmax=5,s=s)
+    ax.scatter(pos[1,:],pos[2,:],c=rho,cmap="plasma",vmin=0,vmax=5,s=s, rasterized=true)
 
     ax.plot([0.25, 0.25, 0.75, 0.75, 0.25], [0.25, 0.75, 0.75, 0.25, 0.25], color="green", linestyle="dashed")
     
@@ -48,7 +48,7 @@ Save plot at `oname`
 function create_square_plot(snaps,name;
                             oname="square_general.png",
                             n_cols=2,
-                            n_rows=nothing, # choose from n_cols and snaps
+                            n_rows=nothing, # choose from n_rows and snaps
                             s=4,
                             print_columns=2)
     
@@ -59,7 +59,7 @@ function create_square_plot(snaps,name;
         return
     end
     
-    fig = figure(figsize=(4*n_cols,4*n_rows))
+    fig = figure(figsize=(4*n_cols,4*n_rows), dpi=300)
     style_plot(fig_width=4*n_cols, print_columns=print_columns)
     gs = fig.add_gridspec(n_rows,n_cols, left=0.01, right=0.99, bottom=0.01, top=0.99, hspace=0.01, wspace=0.01)
     ax = gs.subplots()
@@ -90,9 +90,9 @@ end
 
 main_dir="../../../test_runs/out_hydrostat_square_"
 
-comparison = "general" #"general" / "resolution" / "limiter" 
+comparison = "general" #"general" / "resolution" / "limiter"
 if comparison == "general"
-    methods = ["mfm", "sph","mfm_gizmo", "arepo"]
+    methods = ["mfm", "sph", "mfm_gizmo", "arepo"]
     name = ["MFM", "SPH", "GIZMO", "AREPO"]
     s = [4, 4, 4, 4]
     n_cols = 2
@@ -113,8 +113,8 @@ end
 
 snap_num = 20
 
-snaps = main_dir.*methods.*"/snap_".*sprintf1("%03d",snap_num)
+snaps = main_dir .* methods .* "/snap_".*sprintf1("%03d",snap_num)
 
 global close_all_figures=false
-create_square_plot(snaps, name,s=s, oname="square_"*comparison*".png", n_cols=n_cols)
+create_square_plot(snaps, name,s=s, oname="square_"*comparison*".pdf", n_cols=n_cols)
 

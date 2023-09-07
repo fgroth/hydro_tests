@@ -3,11 +3,6 @@
 InitCondFile                          hydro_tests/hydrostatic_square/square.ic
 OutputDir                             test_runs/out_hydrostat_square_mfm_gizmo/
 
-                                      
-                                      
-                                      
-                                      
-                                      
 
 RestartFile                           restart
 SnapshotFileBase                      snap
@@ -24,18 +19,15 @@ SnapFormat                            2
 
 % CPU-time limit
 
-TimeLimitCPU                          10000
-                                      
-                                      
+TimeLimitCPU                          1000000
+ResubmitOn                            0
+ResubmitCommand                       xyz
 
-MaxMemSize                            900
-                                      
+MaxMemSize                            9000
 
 % Code options
 
 ComovingIntegrationOn                 0
-                                      
-                                      
 
 
 % Output frequency
@@ -44,7 +36,7 @@ TimeBetSnapshot                       0.5
 TimeOfFirstSnapshot                   0
 
 CpuTimeBetRestartFile                 3600.0
-                                      
+TimeBetStatistics                     0.05
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -71,9 +63,9 @@ BoxSize                               1
 
 % Accuracy of time integration
 
-                                      
+ErrTolIntAccuracy                     0.05
 
-                                      
+CourantFac                            0.1
                                       
                                       
 MaxSizeTimestep                       0.02
@@ -82,12 +74,11 @@ MinSizeTimestep                       0.0
 
 % Tree algorithm, force accuracy, domain update frequency
 
-                                      
-                                      
-                                      
+ErrTolTheta                           0.5
+ErrTolForceAcc                        0.005
 
 TreeDomainUpdateFrequency             0.1
-                                      
+MaxRMSDisplacementFac                 0.25
                                       
                                       
                                       
@@ -95,9 +86,8 @@ TreeDomainUpdateFrequency             0.1
 
 %  Further parameters of SPH
 
-DesNumNgb                             14 %20
-                                      
-                                      
+DesNumNgb                             14
+MaxNumNgbDeviation                    1
 InitGasTemp                           0
 MinGasTemp                            0
                                       
@@ -137,41 +127,17 @@ SofteningBndryMaxPhys                 0
                                       
                                       
 
+                                      
+                                      
+
 
 % Special physics
 
-                                      
-                                      
-                                      
-                                      
 
 % Moving mesh
                                       
                                       
-
+                                      
 
 % More parameters
 
-SpectralCRsOn                         0
-EnergyFile                            energy.txt
-ErrTolIntAccuracy                     0.05
-MaxRMSDisplacementFac                 0.25
-ErrTolTheta                           0.5
-ArtBulkViscConst                      0.0
-CpuFile                               cpu.txt
-TypeOfTimestepCriterion               0
-LevelOfStrickness                     0
-StarformationOn                       0
-TypeOfOpeningCriterion                1
-TimeBetStatistics                     0.05
-CourantFac                            0.1
-CoolingOn                             0
-MaxNumNgbDeviation                    1
-TimebinFile                           timebins.txt
-PeriodicBoundariesOn                  1
-ResubmitCommand                       xyz
-TimingsFile                           timings.txt
-ErrTolForceAcc                        0.005
-InfoFile                              info.txt
-ResubmitOn                            0
-BlackHolesOn                          0

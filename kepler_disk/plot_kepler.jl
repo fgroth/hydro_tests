@@ -42,7 +42,7 @@ function plot_density_kepler(snap::String; ax=nothing, vmin=0,vmax=2, part="all"
         println("ERROR: part has to be one of ['all', 'upper( left/right)', 'lower( left/right)']")
     end
     
-    im = ax.scatter(pos[1,range],pos[2,range], c=rho[range], marker=".",vmin=vmin,vmax=vmax, s=1e-1, cmap=get_colormap("density"))
+    im = ax.scatter(pos[1,range],pos[2,range], c=rho[range], marker=".",vmin=vmin,vmax=vmax, s=1e-1, cmap=get_colormap("density"), rasterized=true)
 
     if plot_initial
         # overplot IC
@@ -71,14 +71,17 @@ combined = true
 plot_dir = "./"
 methods = ["mfm", "sph", "mfm_gizmo", "arepo"]
 labels = ["MFM", "SPH", "GIZMO", "AREPO"]
-main_dir = "../../test_runs/"
+main_dir = "/e/ocean2/users/fgroth/test_runs/"
 dirs = main_dir.*"out_kepler_disk_".*methods
 if combined
-    snap_nums = [[5,5,5,5,5],[39,48,48,48,48]]
+    snap_nums = [[5,5,5,5,5],[48,48,48,48,48]]
 else
     snap_nums = [5,21,39,48]
 end
 close_all_figures = false
+
+vmin = 0
+vmax = 2
 
 if combined
     n_cols = 2
@@ -87,10 +90,12 @@ else
     n_rows = length(dirs)
     n_cols = length(snap_nums)
 end
-fig=figure(figsize=(4*n_cols,4*n_rows))
-style_plot(fig_width=4*n_cols, print_columns=2)
-gs = fig.add_gridspec(n_rows,n_cols, hspace=0.03, wspace=0.03,
-                      left=0.1,right=0.99,top=0.99,bottom=0.1)
+colorbar_space = 1.3
+upper_extension=0.02
+fig=figure(figsize=(4*n_cols+colorbar_space,4*n_rows+upper_extension), dpi=150) #, dpi=300)
+style_plot(fig_width=4*n_cols+colorbar_space, print_columns=2)
+gs = fig.add_gridspec(n_rows,n_cols, hspace=0.03, wspace=0.03*(4*n_cols)/(4*n_cols+colorbar_space),
+                      left=0.1*(4*n_cols)/(4*n_cols+colorbar_space),right=0.99-(colorbar_space)/(4*n_cols+colorbar_space),top=0.99/(1+upper_extension),bottom=0.1/(1+upper_extension))
 ax = gs.subplots()
 
 global image = nothing
@@ -100,12 +105,12 @@ for i_dir in 1:length(dirs)
     if combined
         # upper left
         snap1 = dirs[i_dir]*"/snap_"*sprintf1("%03d",snap_nums[1][i_dir])
-        this_image = plot_density_kepler(snap1, ax=ax[i_dir], part="upper left")
+        this_image = plot_density_kepler(snap1, ax=ax[i_dir], part="upper left", vmin=vmin, vmax=vmax)
         # lower right
         snap2 = dirs[i_dir]*"/snap_"*sprintf1("%03d",snap_nums[2][i_dir])
         if this_image != nothing
             ax[i_dir].plot([0,10],[0,10], color="grey", linestyle="dashdot")
-            plot_density_kepler(snap2, ax=ax[i_dir], part="lower right", plot_initial=false)
+            plot_density_kepler(snap2, ax=ax[i_dir], part="lower right", plot_initial=false, vmin=vmin, vmax=vmax)
             # labels
             if image == nothing
                 global image = this_image
@@ -133,7 +138,7 @@ for i_dir in 1:length(dirs)
     ax[i_dir,1].set_ylabel(labels[i_dir])
         for i_snap in 1:length(snap_nums)
             snap = dirs[i_dir]*"/snap_"*sprintf1("%03d",snap_nums[i_snap])
-            this_image = plot_density_kepler(snap,ax=ax[i_dir,i_snap])
+            this_image = plot_density_kepler(snap,ax=ax[i_dir,i_snap], vmin=vmin, vmax=vmax)
             if this_image != nothing
                 if image == nothing
                     global image = this_image
@@ -169,8 +174,11 @@ if combined
         end
     end
 end
+cb_ax = fig.add_axes([(4*n_cols)/(4*n_cols+colorbar_space)+0.02*(4*n_cols)/(4*n_cols+colorbar_space), 0.1/(1+upper_extension), 0.018, 0.89/(1+upper_extension)]) # ???
+cb = colorbar(image, cb_ax, label=L"\rho")
+cb.set_ticks([0,0.5,1,1.5,2])
 
-fig.savefig(plot_dir*"kepler.png")
+fig.savefig(plot_dir*"kepler.pdf")
 if close_all_figures
     close(fig)
 end

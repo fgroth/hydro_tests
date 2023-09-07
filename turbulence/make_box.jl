@@ -8,9 +8,7 @@
 #
 # The package GadgetIO is needed.
 #
-# Note: you have to compile this twice
 # based on make_data.pro
-# only used for very high resolution
 
 # make initial conditions for a turbulent box
 
@@ -24,8 +22,14 @@ using Formatting
 function make_box(npart::Integer=128^3; # number of particles in grid
                   nfiles=1, # number of IC subfiles
                   odir="./", # where to save the IC file
-                  X_turb=0.3) # E_turb / E_therm
-
+                  X_turb=0.3, # E_turb / E_therm
+                  boxsize = 3000, # [kpc]
+                  T = 1e7,                 # [K]
+                  rho = 1e-27,  # [10^10 M_sun / kpc^3]
+                  grid_type = "hcp",
+                  grid_name="grid" 
+                  )
+    
     println("Npart = ", npart)
 
 # Gadget units & chemistry
@@ -40,11 +44,8 @@ function make_box(npart::Integer=128^3; # number of particles in grid
 
 # input values
     fout_name = odir*"turb.ic"      # output filename
-    
-    boxsize = 3000          # [kpc]
-    
-    T = 1e7                 # [K]
-    rho = 1e-27/(m_unit/l_unit^3.)  # [GADGET]
+
+    rho *= l_unit^3 / m_unit    
     mass = rho * boxsize^3
 
 # output
@@ -75,8 +76,17 @@ function make_box(npart::Integer=128^3; # number of particles in grid
     
 # make positions
     pos = Array{Float32,2}(undef,3, npart)
-    println("make positions hcp")
-    make_positions_hcp!(pos,boxsize, boxsize, boxsize, npart)
+    if grid_type == "hcp"
+        println("make positions hcp")
+        make_positions_hcp!(pos,boxsize, boxsize, boxsize, npart)
+    elseif grid_type == "regular"
+        println("make positions regular")
+        make_positions_regular!(pos,boxsize,boxsize,boxsize,npart)
+    elseif grid_type == "from_file"
+        println("read positions from "*grid_name)
+        pos .= read_block(grid_name,"POS",parttype=0)
+        pos ./= read_header(grid_name).boxsize
+    end
     println("done making positions")
 
     for i_file in 1:nfiles
@@ -113,9 +123,9 @@ function make_box(npart::Integer=128^3; # number of particles in grid
     
 # thermal energy
     mass_cgs = mass * m_unit
-    T = u2t(T,inv=true) # to be consistent with what IDL did so far.
     Etherm = mass_cgs/umol/mp * 3.0/2.0 *k_boltz * T
-
+    T = u2t(T,inv=true) # to be consistent with what IDL did so far. Though in general I don't think that is correct... # moved below statement before
+    
     println("Thermal Energy in Box [cgs] = ",Etherm)
 
 # make velocities (the hard part) 
@@ -167,7 +177,14 @@ function make_box(npart::Integer=128^3; # number of particles in grid
     
 # hsml
     hsml = Array{Float32}(undef,npart)
-    hsml[:] .= 75.51 # what GADGET finds on average for this glass
+    if grid_type == "hcp"
+        hsml[:] .= 75.51 # what GADGET finds on average for this glass # this is not resolution and box size dependent yet!
+    elseif grid_type == "regular"
+        hsml[:] .= 75.51 # what GADGET finds on average for this glass # this is not resolution and box size dependent yet!
+    elseif grid_type == "from_file"
+        hsml .= read_block(grid_name,"HSML",parttype=0)
+        pos ./= read_header(grid_name).boxsize
+    end
     println("write hsml")
     for i_file in 1:nfiles
         write_block(fout[i_file], hsml[filerange[i_file]], "HSML")
@@ -359,9 +376,9 @@ function idlNGP(pos, ingrid)
     v = reshape(pos[2,:],npos)
     w = reshape(pos[3,:],npos)
 
-    i = floor.(Integer,u .- 1/2) #.+ 1
-    j = floor.(Integer,v .- 1/2) .+ 1
-    k = floor.(Integer,w .- 1/2) .+ 1
+    i = floor.(Integer,u ) .+ 1
+    j = floor.(Integer,v ) .+ 1
+    k = floor.(Integer,w ) .+ 1
 
     ngp = Array{Float64, 1}(undef,npos)
     for i_part in 1:npos
@@ -436,18 +453,18 @@ function make_positions_hcp!( pos, lx, ly, lz, ntot)
     y = Array{Float64,3}(undef,np[1],np[2],np[3])
     z = Array{Float64,3}(undef,np[1],np[2],np[3])
 
-    idxarr = collect(1:np[1])
+    idxarr = collect(0:np[1]-1)
 
     # A(0) plane
     # 0st row
     x[:,1,1] .= r .+ idxarr*dx
     y[:,1,1] .= r
-    z[:,1,1] .= r
-    
+    z[:,1,1] .= 0 #r
+
     # 1st row
     x[:,2,1] = idxarr .*dx
     y[:,2,1] .= r + dy
-    z[:,2,1] .= r
+    z[:,2,1] .= 0 #r
 
     # A-plane
     # even rows
@@ -456,7 +473,7 @@ function make_positions_hcp!( pos, lx, ly, lz, ntot)
         y[:,i+1,1] = y[:,1,1] .+ i*dy
         z[:,i+1,1] = z[:,1,1]
     end
-    
+
     # odd rows
     for i in 3:2:np[1]-1
         x[:,i+1,1] = x[:,2,1]
@@ -468,12 +485,12 @@ function make_positions_hcp!( pos, lx, ly, lz, ntot)
     # 0rst row
     x[:,1,2] = r .+ idxarr*dx 
     y[:,1,2] .= 0 
-    z[:,1,2] .= r + dz
+    z[:,1,2] .= dz #r + dz
 
     # 1st row
     x[:,2,2] = idxarr .*dx 
     y[:,2,2] .= dy
-    z[:,2,2] .= r + dz
+    z[:,2,2] .= dz #r + dz
 
     # B-plane
     # even rows
@@ -504,14 +521,17 @@ function make_positions_hcp!( pos, lx, ly, lz, ntot)
         y[:,:,i+1] = y[:,:,2]
         z[:,:,i+1] = z[:,:,2] .+ (i-1)*dz
     end
-    
+
+    # make particle arrays
+    #pos = Array{Float64}(undef,np[1],np[2],np[3]) # is an input variable here
+
     bin = 0
     for i in 1:np[1]
         for j in 1:np[2]
             for k in 1:np[3]
-                pos[1,bin+1] = x[i,j,k] + dx/2
-                pos[2,bin+1] = y[i,j,k] + dy/2
-                pos[3,bin+1] = z[i,j,k] + dz/2
+                pos[1,bin+1] = x[i,j,k] + dx/4
+                pos[2,bin+1] = y[i,j,k] + dy/4
+                pos[3,bin+1] = z[i,j,k] + dz/4
                 bin+=1
             end
         end
@@ -537,11 +557,96 @@ function make_positions_hcp!( pos, lx, ly, lz, ntot)
     end
 end
 
-for res in [64, 128, 256, 512, 1024] 
+# create regular grid
+function make_positions_regular!( pos, lx, ly, lz, ntot)
+    
+    # ntot is better divisible by two
+    if mod(ntot, 2) != 0
+        ntot-=1
+    end
+
+    # allow for equal spacing, different per direction ? so basically e.g. ly!=lx
+    
+    # particle numbers
+    np = zeros(Int, 3)
+    np[:] .= round(Int, ntot^(1/3))
+    
+    # find by combining spacings with Ntot
+    dx = (lx/np[1])^(1.0/3.0)
+    dy = (ly/np[2])^(1.0/3.0)
+    dz = (lz/np[3])^(1.0/3.0)
+
+    # enforce periodicity
+    dx += (lx-dx*np[1])/np[1]
+    dy += (ly-dy*np[2])/np[2]
+    dz += (lz-dz*np[3])/np[3]
+       
+    # diagnostics
+    println("Particle numbers :")
+    println("     Nx = ",np[1])
+    println("     Ny = ",np[2])
+    println("     Nz = ",np[3])
+    println(" Total  = ",np[1]*np[2]*np[3])
+    println(" Wanted = ",ntot)
+    println(" Delta  = ",ntot-np[1]*np[2]*np[3])
+
+    ntot = np[1]*np[2]*np[3]
+
+    for ix in 1:np[1]
+        for iy in 1:np[2]
+            for iz in 1:np[3]
+                id = (ix-1) * np[2]*np[3] + (iy-1) * np[3] + iz
+                pos[1,id] = ix * dx
+                pos[2,id] = iy * dy
+                pos[3,id] = iz * dz
+            end
+        end
+    end
+    
+    idxarr = collect(0:np[1]-1)
+
+    pos[1,:] .+= dx/2
+    pos[2,:] .+= dy/2
+    pos[3,:] .+= dz/2
+    
+    println("d ",dy," ",dy," ",dz)
+
+    # randomize
+    #Random.seed!(14041981)
+    r = MT19937() #(14041981)
+    bin = 0
+    for ii in 1:np[1]
+        for ij in 1:np[2]
+            for ik in 1:np[3]
+                i = rand(r,1:ntot) #round(Int, rand()*ntot + 1)
+                j = rand(r,1:ntot) #round(Int, rand()*ntot + 1)
+                
+                pos[1,i], pos[1,j] = pos[1,j], pos[1,i]
+                pos[2,i], pos[2,j] = pos[2,j], pos[2,i]
+                pos[3,i], pos[3,j] = pos[3,j], pos[3,i]
+                bin+=1
+            end
+        end
+    end
+end
+
+
+for res in [64,128,256,512,1024] 
     if res==1024
         nfiles = 8
     else
         nfiles = 1
     end
-    make_box(res^3, nfiles=nfiles, odir="./sph_"*sprintf1("%d",res)*"/")
+    make_box(res^3, nfiles=nfiles, odir="../..//test_runs/IC/turbulence/sph_"*sprintf1("%d",res)*"/")
+end
+for Xi in [0.1,0.01,0.001,0.0001,0.00001]
+    tmp = Xi
+    suffix=""
+    tmp*=10
+    while tmp < 1
+        suffix*="0"
+        tmp*=10
+    end
+    suffix*="1"
+    make_box(128^3, nfiles=1, odir="../../test_runs/IC/turbulence/sph_128_x"*suffix*"/",X_turb=Xi)
 end

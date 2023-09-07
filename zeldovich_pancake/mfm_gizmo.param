@@ -1,7 +1,7 @@
 %  Relevant files
 
 InitCondFile                          hydro_tests/zeldovich_pancake/zeldovich_ics_format2
-OutputDir                             test_runs/out_zeldovich_mfm_gizmo
+OutputDir                             test_runs/out_zeldovich_mfm_new_gizmo
 
 
 RestartFile                           restart
@@ -20,6 +20,8 @@ SnapFormat                            2
 % CPU-time limit
 
 TimeLimitCPU                          50000
+ResubmitOn                            0
+ResubmitCommand                       resub.cmd
 
 MaxMemSize                            16000
 
@@ -34,6 +36,7 @@ TimeBetSnapshot                       1.05
 TimeOfFirstSnapshot                   0.00990099
 
 CpuTimeBetRestartFile                 3600
+TimeBetStatistics                     0.1
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -60,7 +63,9 @@ BoxSize                               64000.0
 
 % Accuracy of time integration
 
+ErrTolIntAccuracy                     0.025
 
+CourantFac                            0.02
                                       
                                       
 MaxSizeTimestep                       0.01
@@ -69,8 +74,11 @@ MinSizeTimestep                       0
 
 % Tree algorithm, force accuracy, domain update frequency
 
+ErrTolTheta                           0.45
+ErrTolForceAcc                        0.005
 
 TreeDomainUpdateFrequency             0.05
+MaxRMSDisplacementFac                 0.25
                                       
                                       
                                       
@@ -79,6 +87,7 @@ TreeDomainUpdateFrequency             0.05
 %  Further parameters of SPH
 
 DesNumNgb                             32
+MaxNumNgbDeviation                    0.01
 InitGasTemp                           100
 MinGasTemp                            0
                                       

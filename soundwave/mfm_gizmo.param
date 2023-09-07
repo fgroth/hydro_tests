@@ -19,7 +19,9 @@ SnapFormat                            2
 
 % CPU-time limit
 
-TimeLimitCPU                          17280000
+TimeLimitCPU                          259200
+ResubmitOn                            0
+ResubmitCommand                       xxx
 
 MaxMemSize                            20000
 
@@ -34,6 +36,7 @@ TimeBetSnapshot                       0.1
 TimeOfFirstSnapshot                   0
 
 CpuTimeBetRestartFile                 7200.0
+TimeBetStatistics                     0.5
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -60,7 +63,9 @@ BoxSize                               1.0
 
 % Accuracy of time integration
 
+ErrTolIntAccuracy                     0.001
 
+CourantFac                            0.03
                                       
                                       
 MaxSizeTimestep                       0.00668367
@@ -69,8 +74,11 @@ MinSizeTimestep                       6.37404e-12
 
 % Tree algorithm, force accuracy, domain update frequency
 
+ErrTolTheta                           0.15
+ErrTolForceAcc                        0.001
 
 TreeDomainUpdateFrequency             0.01
+MaxRMSDisplacementFac                 0.2
                                       
                                       
                                       
@@ -133,3 +141,8 @@ SofteningBndryMaxPhys                 0.0
 
 % More parameters
 
+ArtCondConstant                       0.0
+ViscositySourceScaling                0.0
+ViscosityDecayLength                  0.0
+ViscosityAlphaMin                     0.0
+ArtCondMin                            0.0

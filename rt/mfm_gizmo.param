@@ -3,11 +3,6 @@
 InitCondFile                          hydro_tests/rt/rt.ic
 OutputDir                             test_runs/out_rt_mfm_gizmo/
 
-                                      
-                                      
-                                      
-                                      
-                                      
 
 RestartFile                           restart
 SnapshotFileBase                      snap
@@ -24,18 +19,15 @@ SnapFormat                            2
 
 % CPU-time limit
 
-TimeLimitCPU                          10000
-                                      
-                                      
+TimeLimitCPU                          240000
+ResubmitOn                            0
+ResubmitCommand                       xxx
 
-MaxMemSize                            900
-                                      
+MaxMemSize                            1600
 
 % Code options
 
 ComovingIntegrationOn                 0
-                                      
-                                      
 
 
 % Output frequency
@@ -43,8 +35,8 @@ ComovingIntegrationOn                 0
 TimeBetSnapshot                       0.1
 TimeOfFirstSnapshot                   0
 
-CpuTimeBetRestartFile                 3600.0
-                                      
+CpuTimeBetRestartFile                 7200.0
+TimeBetStatistics                     0.5
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -52,8 +44,8 @@ NumFilesWrittenInParallel             1
 
 % Memory allocation
 
-PartAllocFactor                       4.5
-BufferSize                            5
+PartAllocFactor                       5
+BufferSize                            150
 
 
 %  Caracteristics of run
@@ -61,9 +53,9 @@ BufferSize                            5
 TimeBegin                             0.0
 TimeMax                               20.0
 
-Omega0                                0
-OmegaLambda                           0
-OmegaBaryon                           0
+Omega0                                1.0
+OmegaLambda                           1.0
+OmegaBaryon                           0.05
 OmegaRadiation                        
 HubbleParam                           1.0
 BoxSize                               1
@@ -71,23 +63,22 @@ BoxSize                               1
 
 % Accuracy of time integration
 
-                                      
+ErrTolIntAccuracy                     0.001
 
+CourantFac                            0.1
                                       
                                       
-                                      
-MaxSizeTimestep                       0.02
-MinSizeTimestep                       0.0
+MaxSizeTimestep                       0.1
+MinSizeTimestep                       1e-8
 
 
 % Tree algorithm, force accuracy, domain update frequency
 
-                                      
-                                      
-                                      
+ErrTolTheta                           0.11
+ErrTolForceAcc                        0.001
 
-TreeDomainUpdateFrequency             0.1
-                                      
+TreeDomainUpdateFrequency             0.5
+MaxRMSDisplacementFac                 0.2
                                       
                                       
                                       
@@ -96,82 +87,57 @@ TreeDomainUpdateFrequency             0.1
 %  Further parameters of SPH
 
 DesNumNgb                             14
-                                      
-                                      
+MaxNumNgbDeviation                    0.01
 InitGasTemp                           0
-MinGasTemp                            0
+MinGasTemp                            1e-20
                                       
                                       
 
 % System of units
 
-UnitLength_in_cm                      1.0
-UnitMass_in_g                         1.0
-UnitVelocity_in_cm_per_s              1.0
-GravityConstantInternal               1.0
+UnitLength_in_cm                      1
+UnitMass_in_g                         1
+UnitVelocity_in_cm_per_s              1
+GravityConstantInternal               1
 
 
 % Softening lengths
 
 MaxHsml                               
-MinGasHsmlFractional                  0.0
+MinGasHsmlFractional                  0.1
 
-SofteningGas                          0.004
-SofteningHalo                         0
-SofteningDisk                         0
-SofteningBulge                        0
-SofteningStars                        0
-SofteningBndry                        0
+SofteningGas                          0.05
+SofteningHalo                         0.0
+SofteningDisk                         0.0
+SofteningBulge                        0.0
+SofteningStars                        0.0
+SofteningBndry                        0.0
 
-SofteningGasMaxPhys                   0.004
-SofteningHaloMaxPhys                  0
-SofteningDiskMaxPhys                  0
-SofteningBulgeMaxPhys                 0
-SofteningStarsMaxPhys                 0
-SofteningBndryMaxPhys                 0
+SofteningGasMaxPhys                   0.05
+SofteningHaloMaxPhys                  0.0
+SofteningDiskMaxPhys                  0.0
+SofteningBulgeMaxPhys                 0.0
+SofteningStarsMaxPhys                 0.0
+SofteningBndryMaxPhys                 0.0
 
                                       
                                       
                                       
                                       
+                                      
+                                      
+
                                       
                                       
 
 
 % Special physics
 
-                                      
-                                      
-                                      
-                                      
 
 % Moving mesh
                                       
                                       
-
+                                      
 
 % More parameters
 
-SpectralCRsOn                         0
-EnergyFile                            energy.txt
-ErrTolIntAccuracy                     0.05
-MaxRMSDisplacementFac                 0.25
-ErrTolTheta                           0.5
-ArtBulkViscConst                      0.0
-CpuFile                               cpu.txt
-TypeOfTimestepCriterion               0
-LevelOfStrickness                     0
-StarformationOn                       0
-TypeOfOpeningCriterion                1
-TimeBetStatistics                     0.05
-CourantFac                            0.1
-CoolingOn                             0
-MaxNumNgbDeviation                    1
-TimebinFile                           timebins.txt
-PeriodicBoundariesOn                  1
-ResubmitCommand                       xyz
-TimingsFile                           timings.txt
-ErrTolForceAcc                        0.005
-InfoFile                              info.txt
-ResubmitOn                            0
-BlackHolesOn                          0

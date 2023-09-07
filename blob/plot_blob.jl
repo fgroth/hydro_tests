@@ -12,7 +12,7 @@ Plot a density slice for the blob test.
 """
 function plot_blob(snap::String; ax=nothing, x=1e-1, s="invrho", xlim=[0,6000], ylim=[0,2000])
     if ax == nothing
-        fig,ax = subplots(111,figsize=(4,4))
+        fig,ax = subplots(111,figsize=(4,4), dpi=300)
     end
     
     if !isfile(snap) && !isfile(snap*".0")
@@ -35,7 +35,7 @@ function plot_blob(snap::String; ax=nothing, x=1e-1, s="invrho", xlim=[0,6000], 
     if s == "invrho"
         s = x * (rho[slice]/mean(rho[slice])) .^ (-1/3)
     end
-    ax.scatter(pos[3,slice],pos[1,slice],c=rho[slice],cmap=get_colormap("density"),vmin=vmin,vmax=vmax,s=s)
+    ax.scatter(pos[3,slice],pos[1,slice],c=rho[slice],cmap="plasma",vmin=vmin,vmax=vmax,s=s, rasterized=true) #get_colormap("density")
     
     # IC: circle marking initial position
     rad = 0:0.01:2*pi+0.01
@@ -50,11 +50,11 @@ function plot_blob(snap::String; ax=nothing, x=1e-1, s="invrho", xlim=[0,6000], 
 end
 
 """
-    blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob.png", snap_num=20, snap_num_insertion=nothing)
+    blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob.pdf", snap_num=20, snap_num_insertion=nothing)
 
 Create density comparison plot for the blob test.
 """
-function blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob.png", snap_num=20, snap_num_insertion=nothing)
+function blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob.pdf", snap_num=20, snap_num_insertion=nothing)
     n_cols = 2
     n_rows = ceil(Int, length(methods)/n_cols)
     
@@ -73,7 +73,7 @@ function blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=
             insertion_ax = fig.add_axes([i_col/n_cols*0.99-0.3, i_row/n_rows*0.99-0.2, 0.3, 0.2])
             plot_blob(insertion_snap, ax=insertion_ax, x=1e-2)
         end
-        ax[i].text(1520,1700, names[i], fontsize=PyPlotHelper.title_font_size)
+        ax[i].text(1520,1700, names[i], fontsize=PyPlotHelper.title_font_size, color="white")
     end
     for i in length(methods)+1:n_rows*n_cols
         ax[i].remove()
@@ -84,11 +84,11 @@ function blob_comparison_plot(; methods=["mfm","sph","mfm_gizmo","arepo"],names=
 end
 
 """
-    plot_blob_decay(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob_decay.png")
+    plot_blob_decay(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob_decay.pdf")
 
 Plot the decay of the fraction of the cloud surviving.
 """
-function plot_blob_decay(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob_decay.png")
+function plot_blob_decay(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM","SPH","GIZMO","AREPO"], oname="blob_decay.pdf")
     fig = figure(figsize=(8,8))
     style_plot(fig_width=8, print_columns=2)
     ax = fig.add_subplot()
@@ -171,7 +171,8 @@ function plot_blob_decay(; methods=["mfm","sph","mfm_gizmo","arepo"],names=["MFM
             2.12538102197  0.0104859335038
             2.20504332168  0.00588235294118
             2.29997651234  0.00358056265985
-            2.46225664179  0.00127877237852]
+            2.46225664179  0.00127877237852
+            4.00000000000  0.00000000000000]
     sph_hopkins, = ax.plot(tsph[:,1],tsph[:,2],color="orange", linestyle="dashed")
     mfm_hopkins, = ax.plot(mfm[:,1],mfm[:,2],color="black", linestyle="solid")
 

@@ -125,12 +125,13 @@ Use `names` as labels in legend, save file at `oname`
 function create_comparison_plot( ; methods = ["mfm","sph","mfm_gizmo","arepo"],
                                  names = ["MFM", "SPH", "GIZMO", "AREPO"],
                                  snap_nums = 0:10:200,
-                                 oname = "sphere.png",
+                                 oname = "sphere.pdf",
                                  title_pos = "upper")
-    
-    fig = figure(figsize=(16,8))
-    style_plot(fig_width=16, print_columns=1)
-    gs = fig.add_gridspec(2,4,hspace=0,wspace=0, top=0.98, bottom=0.1, right=0.94, left=0.07)
+
+    n_width = length(methods)
+    fig = figure(figsize=(4*n_width,8))
+    style_plot(fig_width=4*n_width, print_columns=1)
+    gs = fig.add_gridspec(2,n_width,hspace=0,wspace=0, top=0.98, bottom=0.1, right=0.94, left=0.07)
     ax = gs.subplots()
     
     for i in 1:length(methods)
@@ -167,8 +168,9 @@ function create_comparison_plot( ; methods = ["mfm","sph","mfm_gizmo","arepo"],
     fig.savefig(oname)
 end
 
-#create_comparison_plot()
-create_comparison_plot(methods=["mfm","mfm_testhll","mfm_testroe","mfm_testhllc"],
-                       names=["MFM(Rs=exact)","MFM(Rs=HLL)","MFM(Rs=Roe)","MFM(Rs=HLLC)"],
-                       oname="sphere_riemann.png",
-                       title_pos="lower")
+create_comparison_plot()
+create_comparison_plot(methods=["new","mfm_testhll","mfm_testhlle","mfm_testroe","mfm_testhllc"],
+                       names=["MFM(Rs=exact)","MFM(Rs=HLL)","MFM(Rs=HLLE)","MFM(Rs=Roe)","MFM(Rs=HLLC)"],
+                       oname="sphere_riemann.pdf",
+                       title_pos="lower",
+                       snap_nums=0:10:200)

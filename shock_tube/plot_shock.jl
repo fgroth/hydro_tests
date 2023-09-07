@@ -31,12 +31,12 @@ function plot_density( ; data=nothing, snapdir::String="", snap_num::Integer=-1,
         pos = data["pos"]
         rho = data["rho"]
     end
-    line, = ax.plot(pos[1,:], rho, marker=marker, color=color, linestyle="")
+    line = ax.scatter(pos[1,:], rho, marker=marker, c=color, rasterized=true)
     if zoom_ax1 != nothing
-        zoom_ax1.plot(pos[1,:], rho, marker=marker, color=color, linestyle="")
+        zoom_ax1.scatter(pos[1,:], rho, marker=marker, c=color, rasterized=true)
     end
     if zoom_ax2 != nothing
-        zoom_ax2.plot(pos[1,:], rho, marker=marker, color=color, linestyle="")
+        zoom_ax2.scatter(pos[1,:], rho, marker=marker, c=color, rasterized=true)
     end
     
     if !no_labels
@@ -70,15 +70,15 @@ function plot_pressure( ; data=nothing, snapdir::String="", snap_num::Number=-1,
         rho = data["rho"]
     end
     p = u.*(gamma-1).*rho
-    ax.plot(pos[1,:], p, marker=marker, color=color, linestyle="")
+    ax.scatter(pos[1,:], p, marker=marker, c=color, rasterized=true)
     if zoom_ax1 != nothing
-        zoom_ax1.plot(pos[1,:], p, marker=marker, color=color, linestyle="")
+        zoom_ax1.scatter(pos[1,:], p, marker=marker, c=color, rasterized=true)
     end
     if zoom_ax2 != nothing
-        zoom_ax2.plot(pos[1,:], p, marker=marker, color=color, linestyle="")
+        zoom_ax2.scatter(pos[1,:], p, marker=marker, c=color, rasterized=true)
     end
     if !no_labels
-        ax.set_ylabel(L"p")
+        ax.set_ylabel(L"P")
     end
 end
 
@@ -102,12 +102,12 @@ function plot_velocity( ; data=nothing, snapdir::String="", snap_num::Number=-1,
         pos = data["pos"]
         vel = data["vel"]
     end
-    ax.plot(pos[1,:],vel[1,:], marker=marker, color=color, linestyle="")
+    ax.scatter(pos[1,:],vel[1,:], marker=marker, c=color, rasterized=true)
     if zoom_ax1 != nothing
-        zoom_ax1.plot(pos[1,:], vel[1,:], marker=marker, color=color, linestyle="")
+        zoom_ax1.scatter(pos[1,:], vel[1,:], marker=marker, c=color, rasterized=true)
     end
     if zoom_ax2 != nothing
-        zoom_ax2.plot(pos[1,:], vel[1,:], marker=marker, color=color, linestyle="")
+        zoom_ax2.scatter(pos[1,:], vel[1,:], marker=marker, c=color, rasterized=true)
     end
     if !no_labels
         ax.set_ylabel(L"v")
@@ -138,12 +138,12 @@ function plot_entropy( ; data=nothing, snapdir::String="", snap_num::Number=-1,
         rho = data["rho"]
     end
     A = u.*(gamma-1)./rho.^(gamma-1)
-    ax.plot(pos[1,:], A, marker=marker, color=color, linestyle="")
+    ax.scatter(pos[1,:], A, marker=marker, c=color)
     if zoom_ax1 != nothing
-        zoom_ax1.plot(pos[1,:], A, marker=marker, color=color, linestyle="")
+        zoom_ax1.scatter(pos[1,:], A, marker=marker, c=color)
     end
     if zoom_ax2 != nothing
-        zoom_ax2.plot(pos[1,:], A, marker=marker, color=color, linestyle="")
+        zoom_ax2.scatter(pos[1,:], A, marker=marker, c=color)
     end
     if !no_labels
         ax.set_ylabel(L"A=P/\rho^{\gamma}")
@@ -248,8 +248,13 @@ function comparison_plot(; plot_analytical=true,density=true,pressure=true,veloc
         end
     end
     n_blocks = length(mach) * length(hydro_methods)
-    
-    fig = figure(figsize=(4*n_blocks,4*n_subplots))
+
+    height_frac = if n_subplots == 1
+        1
+    else
+        0.61
+    end
+    fig = figure(figsize=(4*n_blocks,4*n_subplots*height_frac), dpi=300)
     style_plot(fig_width=4*n_blocks, print_columns=1)
     rc("lines", markersize=3)
     rc("legend", markerscale=2)
@@ -452,7 +457,7 @@ function comparison_plot(; plot_analytical=true,density=true,pressure=true,veloc
             if entropy
                 ax[i_entropy,i_block].plot(x, solution.P ./ solution.rho .^gamma, color="black", linestyle="-")
                 if plot_zoom
-                    #
+                    # ???
                 end
             end
         end
@@ -469,7 +474,7 @@ function comparison_plot(; plot_analytical=true,density=true,pressure=true,veloc
         for m in mach
             oname = oname*"_M-"*m
         end
-        oname = oname*".png"
+        oname = oname*".pdf"
     end
     fig.savefig(oname)
 end
@@ -486,8 +491,8 @@ end
 comparison_plot(mach=["1_5","3_0","10_0","100_0"], plot_zoom=false,
                 density=true,pressure=true,velocity=true,entropy=true,
                 hydro_methods="mfm",
-                oname="shock_mfm.png", snap_num=25)
+                oname="shock_mfm.pdf", snap_num=25)
 comparison_plot(mach="10_0", plot_zoom=true,
                 density=false,pressure=true,velocity=false,entropy=false,
-                hydro_methods=["mfm","sph","mfm_gizmo_old","arepo"],
-                oname="shock_methods.png", snap_num=25)
+                hydro_methods=["mfm","sph","mfm_gizmo","arepo"],
+                oname="shock_methods.pdf", snap_num=25)

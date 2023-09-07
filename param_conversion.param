@@ -28,8 +28,8 @@ SnapFormat                      SnapFormat                           SnapFormat/
 % CPU-time limit
 
 TimeLimitCPU                    TimeLimitCPU                         TimeLimitCPU/MaxSimulationWallTime_in_Seconds
-ResubmitOn                      ResubmitOn                           
-ResubmitCommand                 ResubmitCommand                      
+ResubmitOn                      ResubmitOn                           ResubmitOn
+ResubmitCommand                 ResubmitCommand                      ResubmitCommand/Shell_Resubmission_Command
 
 MaxMemSize                      MaxMemSize                           MaxMemSize/Max_Memory_Per_MPI_Task_in_MB
 LevelOfStrickness                                                    
@@ -47,7 +47,7 @@ TimeBetSnapshot                 TimeBetSnapshot                      TimeBetSnap
 TimeOfFirstSnapshot             TimeOfFirstSnapshot                  TimeOfFirstSnapshot/Simulation_Time_of_First_Snapshot
 
 CpuTimeBetRestartFile           CpuTimeBetRestartFile                CpuTimeBetRestartFile/Walltime_in_Seconds_Between_Restartfiles
-TimeBetStatistics               TimeBetStatistics                    
+TimeBetStatistics               TimeBetStatistics                    TimeBetStatistics
 
 NumFilesPerSnapshot             NumFilesPerSnapshot                  NumFilesPerSnapshot/Number_of_Files_per_Snapshot
 NumFilesWrittenInParallel       NumFilesWrittenInParallel            NumFilesWrittenInParallel/Number_of_Files_Written_in_Parallel
@@ -74,9 +74,9 @@ BoxSize                         BoxSize                              BoxSize/Box
 
 % Accuracy of time integration
 
-ErrTolIntAccuracy               ErrTolIntAccuracy                    
+ErrTolIntAccuracy               ErrTolIntAccuracy                    ErrTolIntAccuracy
 
-CourantFac                      CourantFac                           
+CourantFac                      CourantFac                           CourantFac
                                 LimitUBelowThisDensity               
                                 LimitUBelowCertainDensityToThisValue 
 MaxSizeTimestep                 MaxSizeTimestep                      MaxSizeTimestep/Maximum_Timestep_Allowed
@@ -85,12 +85,12 @@ MinSizeTimestep                 MinSizeTimestep                      MinSizeTime
 
 % Tree algorithm, force accuracy, domain update frequency
 
-ErrTolTheta                     ErrTolTheta
+ErrTolTheta                     ErrTolTheta                          ErrTolTheta
 TypeOfOpeningCriterion          TypeOfOpeningCriterion
-ErrTolForceAcc                  ErrTolForceAcc
+ErrTolForceAcc                  ErrTolForceAcc                       ErrTolForceAcc
 
 TreeDomainUpdateFrequency                                            TreeDomainUpdateFrequency/DomainTreeRebuild_ActiveFractionThreshold
-MaxRMSDisplacementFac           
+MaxRMSDisplacementFac                                                MaxRMSDisplacementFac
                                 MultipleDomains
                                 TopNodeFactor
                                 ActivePartFracForNewDomainDecomp
@@ -99,7 +99,7 @@ MaxRMSDisplacementFac
 %  Further parameters of SPH
 
 DesNumNgb                       DesNumNgb                            DesNumNgb/Effective_Kernel_NeighborNumber
-MaxNumNgbDeviation              MaxNumNgbDeviation
+MaxNumNgbDeviation              MaxNumNgbDeviation                   MaxNumNgbDeviation
 ArtBulkViscConst
 InitGasTemp                     InitGasTemp                          InitGasTemp/Initial_Gas_Temperature
 MinGasTemp                      MinGasTemp                           MinGasTemp/Minimum_Gas_Temperature

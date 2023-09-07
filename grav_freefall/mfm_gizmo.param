@@ -3,11 +3,6 @@
 InitCondFile                          hydro_tests/grav_freefall/freefall.ic
 OutputDir                             test_runs/out_grav_freefall_mfm_gizmo
 
-                                      
-                                      
-                                      
-                                      
-                                      
 
 RestartFile                           restart
 SnapshotFileBase                      snap
@@ -25,17 +20,14 @@ SnapFormat                            2
 % CPU-time limit
 
 TimeLimitCPU                          17280000
-                                      
-                                      
+ResubmitOn                            0
+ResubmitCommand                       xxx
 
 MaxMemSize                            2000
-                                      
 
 % Code options
 
 ComovingIntegrationOn                 0
-                                      
-                                      
 
 
 % Output frequency
@@ -44,7 +36,7 @@ TimeBetSnapshot                       0.05
 TimeOfFirstSnapshot                   0
 
 CpuTimeBetRestartFile                 7200.0
-                                      
+TimeBetStatistics                     0.5
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -71,9 +63,9 @@ BoxSize                               2.0
 
 % Accuracy of time integration
 
-                                      
+ErrTolIntAccuracy                     0.01
 
-                                      
+CourantFac                            0.1
                                       
                                       
 MaxSizeTimestep                       0.00668367
@@ -82,12 +74,11 @@ MinSizeTimestep                       6.37404e-12
 
 % Tree algorithm, force accuracy, domain update frequency
 
-                                      
-                                      
-                                      
+ErrTolTheta                           0.11
+ErrTolForceAcc                        0.00001
 
 TreeDomainUpdateFrequency             0.01
-                                      
+MaxRMSDisplacementFac                 0.2
                                       
                                       
                                       
@@ -96,8 +87,7 @@ TreeDomainUpdateFrequency             0.01
 %  Further parameters of SPH
 
 DesNumNgb                             32
-                                      
-                                      
+MaxNumNgbDeviation                    0.01
 InitGasTemp                           0
 MinGasTemp                            1e-20
                                       
@@ -137,44 +127,24 @@ SofteningBndryMaxPhys                 0.02
                                       
                                       
 
+                                      
+                                      
+
 
 % Special physics
 
-                                      
-                                      
-                                      
-                                      
 
 % Moving mesh
                                       
                                       
+                                      
 
+% More parameters
 
-SpectralCRsOn                         0
-TimingsFile                           timings.txt
-EnergyFile                            energy.txt
-ErrTolIntAccuracy                     0.01
-ErrTolTheta                           0.0005
+AGS_DesNumNgb                         32
+AGS_MaxNumNgbDeviation                0.01
 ArtCondConstant                       0.0
-MaxRMSDisplacementFac                 0.2
-ArtBulkViscConst                      2.0
-CpuFile                               cpu.txt
-TypeOfTimestepCriterion               0
-LevelOfStrickness                     1
-StarformationOn                       0
-TypeOfOpeningCriterion                1
 ViscositySourceScaling                0.0
-TimeBetStatistics                     0.5
-InfoFile                              info.txt
-CourantFac                            0.1
-BlackHolesOn                          0
 ViscosityDecayLength                  0.025
-MaxNumNgbDeviation                    0.01
-TimebinFile                           timebin.txt
 ViscosityAlphaMin                     1.0
-PeriodicBoundariesOn                  0
-ResubmitCommand                       xxx
-ErrTolForceAcc                        0.00001
-CoolingOn                             0
-ResubmitOn                            0
 ArtCondMin                            0.0

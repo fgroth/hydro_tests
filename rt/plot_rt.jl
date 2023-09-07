@@ -24,7 +24,7 @@ function plot_rt(snap::String; ax=nothing,s=1e-1, vmin=0.5, vmax=2.5, problem = 
 
     println(minimum(rho),maximum(rho))
     
-    ax.scatter(pos[1,:],pos[2,:],c=rho,cmap=get_colormap("density"),vmin=vmin,vmax=vmax,s=s)
+    ax.scatter(pos[1,:],pos[2,:],c=rho,cmap=get_colormap("density"),vmin=vmin,vmax=vmax,s=s, rasterized=true)
 
     if problem == "rt"
         ax.plot([0, 1], [0.5, 0.5], color="green", linestyle="dashed")
@@ -57,8 +57,8 @@ function create_rt_plot(snaps,name;
                         ypos_label=0.82,
                         print_columns=2)
     n_rows = ceil(Int, length(snaps)/n_cols)
-    
-    fig = figure(figsize=(4*n_cols,4*n_rows))
+
+    fig = figure(figsize=(4*n_cols,4*n_rows), dpi=300)
     style_plot(fig_width=4*n_cols, print_columns=print_columns)
     gs = fig.add_gridspec(n_rows,n_cols, left=0.01, right=0.99, bottom=0.01, top=0.99, hspace=0.01, wspace=0.01)
     ax = gs.subplots()
@@ -86,7 +86,7 @@ elseif problem == "rt"
     ypos_label = 0.9
 end
 
-comparison = "limiter" # "general" / "limiter"
+comparison = "general" # "general" / "limiter" / "riemann"
 if comparison == "general"
     methods = ["mfm", "sph", "mfm_gizmo", "arepo"]
     name = ["MFM", "SPH", "GIZMO", "AREPO"]
@@ -100,6 +100,13 @@ elseif comparison == "limiter"
     n_cols = 3
     print_columns=2
     ypos_label=0.82
+elseif comparison == "riemann"
+    methods = "mfm".*["","_testhll","_testroe","_testhllc"]
+    name = ["MFM(Rs=exact)","MFM(Rs=HLL)","MFM(Rs=Roe)","MFM(Rs=HLLC)"]
+    s=3e-1.*ones(4)
+    n_cols=4
+    print_columns=1
+    ypos_label=0.9
 end
 
 if problem == "rt"
@@ -110,4 +117,4 @@ end
 
 global close_all_figures=false
 
-create_rt_plot(main_dir.*methods.*"/snap_".*sprintf1("%03d",snap_num),name,oname=problem*"_"*comparison*".png",problem=problem,s=s, n_cols=n_cols, ypos_label=ypos_label, print_columns=print_columns)
+create_rt_plot(main_dir.*methods.*"/snap_".*sprintf1("%03d",snap_num),name,oname=problem*"_"*comparison*".pdf",problem=problem,s=s, n_cols=n_cols, ypos_label=ypos_label, print_columns=print_columns)

@@ -53,7 +53,7 @@ NumFilesWrittenInParallel             1
 % Memory allocation
 
 PartAllocFactor                       9.5
-BufferSize                            5
+BufferSize                            50
 
 
 %  Caracteristics of run
@@ -164,7 +164,7 @@ LevelOfStrickness                     0
 StarformationOn                       0
 TypeOfOpeningCriterion                1
 TimeBetStatistics                     0.05
-CourantFac                            0.1
+CourantFac                            0.05
 CoolingOn                             0
 MaxNumNgbDeviation                    0.01
 TimebinFile                           timebins.txt

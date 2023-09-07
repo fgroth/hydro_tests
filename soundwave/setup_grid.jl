@@ -18,13 +18,13 @@ function mod(x::Float128,y::Real)
 end
 
 global ORDER = 1 # order of soundwave
-
 function make_soundwave( ; res = 64, # resolution
-                         grid_type::String="regular", # type of grid. regular or hcp
+                         grid_type::String="regular", # type of grid. So far only regular, but should include other grids as well!
                          oname::String="soundwave_64.ic", # name of file to create
                          longx=1, longy=0.75, longz=0.75, # size of box
                          amplitude = 1e-4, # amplitude of density perturbation
-                         doubleprecision=false) # use doubleprecision datatypes
+                         doubleprecision=false, # use doubleprecision datatypes
+                         arepo=false) # use proper center of mass for Arepo
 
     fout = open(oname, create=true, write=true)
 
@@ -51,7 +51,7 @@ function make_soundwave( ; res = 64, # resolution
                                       Float64(1), #boxsize
                                       Float64(0.3), #omega0
                                       Float64(0.7), #omegalambda
-                                      Float64(0.7), #hubbleparam
+                                      Float64(1.0), #hubbleparam
                                       Int32(0), # flag stellarage
                                       Int32(0), # flag metals
                                       UInt32.([0, 0,0,0,0,0]),
@@ -65,6 +65,19 @@ function make_soundwave( ; res = 64, # resolution
     end
     write_block(fout, float_type.(pos), "POS")
 
+    # for Arepo velocity, internal energy, and density actually have to use particle centers (center of mass)
+    pos = if arepo
+        tmp = if grid_type == "hcp"
+            ""
+        else
+            "regular_"
+        end
+        ids = read_block("../../test_runs/out_soundwave_arepo_"*tmp*sprintf1("%d",res)*"/snap_000","ID",parttype=0)
+        read_block("../../test_runs/out_soundwave_arepo_"*tmp*sprintf1("%d",res)*"/snap_000","CMCE",parttype=0,info=InfoLine("CMCE",Float32,3,[1,0,0,0,0,0]))[:,sortperm(ids)]
+    else
+        pos
+    end
+
     vel = make_vel(pos, amplitude=amplitude)
     write_block(fout, float_type.(vel), "VEL")
 
@@ -74,6 +87,11 @@ function make_soundwave( ; res = 64, # resolution
     u   = make_u(pos, amplitude=amplitude)
     write_block(fout, float_type.(u), "U")
 
+    rho = if arepo
+        make_rho(pos, amplitude=amplitude)
+    else
+        rho
+    end
     write_block(fout, float_type.(rho), "RHO")
 
     hsml = Array{Float64}(undef, length(pos[1,:]))
@@ -306,6 +324,21 @@ function dx_offset(x::AbstractFloat, res=64; longx=1, amplitude=0.01, difference
     
 end
 
+function make_rho(pos::Matrix; # array of positions
+                  amplitude = 0.01) # amplitude of the density perturbation
+
+    mean_rho = 1.0
+    
+    rho = Array{Float64}(undef, length(pos[1,:]))
+    rho .= mean_rho
+
+    for i in 1:length(rho)
+        rho[i] = rho[i] + amplitude * sin( 2 * pi * ORDER * pos[1,i] )
+    end
+    
+    return rho
+
+end
 function make_vel(pos; # array of positions
                   amplitude = 0.01) # amplitude of the density perturbation
 
@@ -329,5 +362,6 @@ function make_u(pos; # array of positions
 end
 
 for res in [32, 45, 64, 90, 128]
-    make_soundwave(res=res, oname="hcp_soundwave_"*sprintf1("%d", res)*".ic", grid_type="hcp", doubleprecision=false)
+    make_soundwave(res=res, oname="soundwave_"*sprintf1("%d", res)*".ic", grid_type="hcp", doubleprecision=false)
+    make_soundwave(res=res, oname="soundwave_"*sprintf1("%d", res)*"_arepo.ic", grid_type="hcp", doubleprecision=false, arepo=true)
 end

@@ -1,14 +1,14 @@
 %  Relevant files
 
-InitCondFile                          hydro_tests/kh/kh_mcnally_2dgrid_ics.ic
-OutputDir                             test_runs/out_kh_mfm_gizmo/
+InitCondFile                          test_runs/IC/turbulence/sph_128/turb.ic
+OutputDir                             test_runs/out_turb_mfm_gizmo_128
 
 
 RestartFile                           restart
 SnapshotFileBase                      snap
 
 OutputListOn                          0
-OutputListFilename                    output_times.txt
+OutputListFilename                    outputs_selection.txt
 
 
 % Output/Input format
@@ -19,11 +19,11 @@ SnapFormat                            2
 
 % CPU-time limit
 
-TimeLimitCPU                          240000
+TimeLimitCPU                          2160000 %169000
 ResubmitOn                            0
-ResubmitCommand                       my-scriptfile
+ResubmitCommand                       xxx
 
-MaxMemSize                            2000
+MaxMemSize                            290000
 
 % Code options
 
@@ -32,10 +32,10 @@ ComovingIntegrationOn                 0
 
 % Output frequency
 
-TimeBetSnapshot                       0.5
+TimeBetSnapshot                       0.2
 TimeOfFirstSnapshot                   0
 
-CpuTimeBetRestartFile                 1800
+CpuTimeBetRestartFile                 18000
 TimeBetStatistics                     0.05
 
 NumFilesPerSnapshot                   1
@@ -44,40 +44,40 @@ NumFilesWrittenInParallel             1
 
 % Memory allocation
 
-PartAllocFactor                       5.5
-BufferSize                            100
+PartAllocFactor                       3.0
+BufferSize                            20
 
 
 %  Caracteristics of run
 
-TimeBegin                             0
-TimeMax                               8
+TimeBegin                             0.0
+TimeMax                               16
 
 Omega0                                0
 OmegaLambda                           0
 OmegaBaryon                           0
 OmegaRadiation                        
-HubbleParam                           1
-BoxSize                               1.0
+HubbleParam                           0.7
+BoxSize                               3000.0
 
 
 % Accuracy of time integration
 
-ErrTolIntAccuracy                     0.05
+ErrTolIntAccuracy                     0.04
 
-CourantFac                            0.05
+CourantFac                            0.15
                                       
                                       
-MaxSizeTimestep                       0.02
-MinSizeTimestep                       0.0
+MaxSizeTimestep                       0.1
+MinSizeTimestep                       1.0e-8
 
 
 % Tree algorithm, force accuracy, domain update frequency
 
-ErrTolTheta                           0.5
-ErrTolForceAcc                        0.005
+ErrTolTheta                           0.6
+ErrTolForceAcc                        0.009
 
-TreeDomainUpdateFrequency             0.1
+TreeDomainUpdateFrequency             0.025
 MaxRMSDisplacementFac                 0.25
                                       
                                       
@@ -86,10 +86,10 @@ MaxRMSDisplacementFac                 0.25
 
 %  Further parameters of SPH
 
-DesNumNgb                             14
+DesNumNgb                             32
 MaxNumNgbDeviation                    0.1
 InitGasTemp                           0
-MinGasTemp                            0
+MinGasTemp                            0.01
                                       
                                       
 
@@ -104,21 +104,21 @@ GravityConstantInternal               0
 % Softening lengths
 
 MaxHsml                               
-MinGasHsmlFractional                  0
+MinGasHsmlFractional                  0.0
 
-SofteningGas                          0.29472
-SofteningHalo                         0
-SofteningDisk                         0
-SofteningBulge                        0
-SofteningStars                        0
-SofteningBndry                        0
+SofteningGas                          1.0
+SofteningHalo                         1.0
+SofteningDisk                         1.0
+SofteningBulge                        1.0
+SofteningStars                        1.0
+SofteningBndry                        1.0
 
-SofteningGasMaxPhys                   0.29472
-SofteningHaloMaxPhys                  0
-SofteningDiskMaxPhys                  0
-SofteningBulgeMaxPhys                 0
-SofteningStarsMaxPhys                 0
-SofteningBndryMaxPhys                 0
+SofteningGasMaxPhys                   1.0
+SofteningHaloMaxPhys                  1.0
+SofteningDiskMaxPhys                  1.0
+SofteningBulgeMaxPhys                 1.0
+SofteningStarsMaxPhys                 1.0
+SofteningBndryMaxPhys                 1.0
 
                                       
                                       
@@ -141,7 +141,13 @@ SofteningBndryMaxPhys                 0
 
 % More parameters
 
+ArtificialMagneticDissipationDecaytime0.3
+ArtificialMagneticDissipationSource   15.0
 ArtCondConstant                       1.0
-ViscosityDecayLength                  4.0
+ArtificialMagneticDissipationConstant 0.25
 ViscositySourceScaling                0.0
-ViscosityAlphaMin                     0.02
+ArtificialMagneticDissipationMin      0.001
+ViscosityDecayLength                  4.0
+ViscosityAlphaMin                     0.025
+ArtCondMin                            0.0
+ShockfinderNoiselevel                 0.05

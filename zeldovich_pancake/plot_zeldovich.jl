@@ -57,12 +57,12 @@ function plot_zeldovich(snap::String; ax_v=nothing,ax_rho=nothing,ax_T=nothing,p
     # fold around periodicity
     pos[1,:] = @. mod(pos[1,:] + pos0,2*pos0)-pos0
     
-    line, = ax_v.plot(pos[1,:], vel[1,:]./1e3,color=color,marker=marker,markersize=1, linestyle=" ")
+    line = ax_v.scatter(pos[1,:], vel[1,:]./1e3,c=color,marker=marker,s=1, rasterized=true)
 
     T = @. g1 / kcgs * mp * u * e_unit / m_unit * mu
-    ax_T.plot(pos[1,:], log10.(T), color=color, marker=marker, markersize=1, linestyle=" ")
+    ax_T.scatter(pos[1,:], log10.(T), c=color, marker=marker, s=1, rasterized=true)
 
-    ax_rho.plot(pos[1,:], log10.(rho./2.9e-8), color=color, marker=marker, markersize=1, linestyle=" ")
+    ax_rho.scatter(pos[1,:], log10.(rho./2.9e-8), c=color, marker=marker, s=1, rasterized=true)
 
     ax_rho.set_xlim([-32,32])
     ax_v.set_xlim([-32,32])
@@ -109,7 +109,7 @@ end
 n_rows = 3 # v, rho, T
 n_cols = length(methods)
 
-fig = figure(figsize=(4*n_cols,4*n_rows))
+fig = figure(figsize=(4*n_cols,4*n_rows*0.85), dpi=300)
 style_plot(fig_width=4*length(methods), print_columns=print_columns)
 gs = fig.add_gridspec(n_rows,n_cols, hspace=0.0, wspace=0.0, top=top, bottom=bottom, right=right, left=left)
 ax = gs.subplots()
@@ -138,4 +138,4 @@ for i_col in 1:n_cols
     ax[3,i_col].set_xlabel(L"x~[h^{-1}"*"Mpc]")
 end
 fig.show()
-fig.savefig("zeldovich_"*comparison*".png")
+fig.savefig("zeldovich_"*comparison*".pdf")

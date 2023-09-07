@@ -20,6 +20,8 @@ SnapFormat                            2
 % CPU-time limit
 
 TimeLimitCPU                          50000
+ResubmitOn                            0
+ResubmitCommand                       resub.cmb
 
 MaxMemSize                            1600
 
@@ -34,6 +36,7 @@ TimeBetSnapshot                       2.5
 TimeOfFirstSnapshot                   0
 
 CpuTimeBetRestartFile                 3600
+TimeBetStatistics                     0.1
 
 NumFilesPerSnapshot                   1
 NumFilesWrittenInParallel             1
@@ -60,7 +63,9 @@ BoxSize                               8
 
 % Accuracy of time integration
 
+ErrTolIntAccuracy                     0.002
 
+CourantFac                            0.025
                                       
                                       
 MaxSizeTimestep                       0.1
@@ -69,8 +74,11 @@ MinSizeTimestep                       0
 
 % Tree algorithm, force accuracy, domain update frequency
 
+ErrTolTheta                           0.11
+ErrTolForceAcc                        0.0005
 
 TreeDomainUpdateFrequency             0.005
+MaxRMSDisplacementFac                 0.125
                                       
                                       
                                       
@@ -78,7 +86,8 @@ TreeDomainUpdateFrequency             0.005
 
 %  Further parameters of SPH
 
-DesNumNgb                             14 %32
+DesNumNgb                             14
+MaxNumNgbDeviation                    0.1
 InitGasTemp                           0
 MinGasTemp                            0
                                       
